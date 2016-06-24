@@ -11,14 +11,14 @@ Installation
 1. Add to your `composer.json` :
 
     ```bash
-    $ php composer.phar require mvlabs/MvlabsDataFilter
+    $ php composer.phar require mvlabs/mvlabs-data-filter
     ```
     
 
-2. Now tell composer to download mvlabs/MvlabsDataFilter by running the command:
+2. Now tell composer to download mvlabs/mvlabs-data-filter by running the command:
 
     ```bash
-    $ php composer.phar update mvlabs/MvlabsDataFilter
+    $ php composer.phar update mvlabs/mvlabs-data-filter
     ```
 
 Usage

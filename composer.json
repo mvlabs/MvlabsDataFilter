@@ -1,5 +1,5 @@
 {
-    "name": "mvlabs/MvlabsDataFilter",
+    "name": "mvlabs/mvlabs-data-filter",
     "description": "MvlabsDataFilter is a PHP5 OO abstraction to manage SQL query filters.",
     "keywords": ["PHP","DataFilter","selectionCriteria","query filter"],
     "homepage": "https://github.com/mvlabs/MvlabsDataFilter",
