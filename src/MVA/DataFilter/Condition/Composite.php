@@ -25,7 +25,7 @@ class Composite extends \MVA\DataFilter\Condition {
 
 	/**
 	 * Creates a composite condition object
-	 * @param MVA\DataFilter\Operator\Logical $I_operator
+	 * @param \MVA\DataFilter\Operator\Logical $I_operator
 	 * @param array $aI_conditions
 	 */
 	public function __construct(array $aI_conditions, \MVA\DataFilter\Operator\Logical $I_operator = null) {
@@ -41,7 +41,7 @@ class Composite extends \MVA\DataFilter\Condition {
 
 	/**
 	 * Sets Current Condition Operator
-	 * @param MVA\DataFilter\Operator\Logical Logical Operator
+	 * @param \MVA\DataFilter\Operator\Logical Logical Operator
 	 * @see FilteringLogic/MVA\DataFilter.Condition::setOperator()
 	 */
 	public function setOperator(\MVA\DataFilter\Operator $I_operator) {
@@ -57,7 +57,7 @@ class Composite extends \MVA\DataFilter\Condition {
 
 	/**
 	 * Returns Current Composite Condition Operator
-	 * @return MVA\DataFilter\Operator\Logical Logical Operator
+	 * @return \MVA\DataFilter\Operator\Logical Logical Operator
 	 * @see FilteringLogic/MVA\DataFilter.Condition::getOperator()
 	 */
 	public function getOperator() {

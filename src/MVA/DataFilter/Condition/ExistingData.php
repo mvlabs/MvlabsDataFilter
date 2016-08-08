@@ -24,7 +24,7 @@ class ExistingData extends Atomic {
 
 	/**
 	 * Class Constructor
-	 * @param MVA\DataFilter\Operator\Comparison Comparison Operator
+	 * @param \MVA\DataFilter\Operator\Comparison Comparison Operator
 	 * @param string Source Field for Comparison
 	 * @param string Target Field for Comparison
 	 * @throws Exception

@@ -152,11 +152,11 @@ class Doctrine2Dql extends \MVA\DataFilter\SelectionCriteriaFormatter {
 						$as_outString[] = $this->am_mapping[$as_parts[0]]['alias'].'.'.$as_parts[1].' '.$as_orderByConstructs[$m_ordering];
 					$i_validClauses++;
 				} else {
-					throw new \MVA\DataFilter\Exception('Invalid order by field: '.\MVA\Core\Debug::dumpToString($s_field).
+					throw new \MVA\DataFilter\Exception('Invalid order by field: '.$s_field.
 					                    ' passed to '.__CLASS__.' - No Item named '.$as_parts[0].' within the Model');
 				}
 			} else {
-				throw new \MVA\DataFilter\Exception('Invalid order by field: '.\MVA\Core\Debug::dumpToString($s_field).
+				throw new \MVA\DataFilter\Exception('Invalid order by field: '.$s_field.
 				                    ' passed to '.__CLASS__.' - Wrong Syntax');
 			}
 		}
@@ -431,11 +431,11 @@ class Doctrine2Dql extends \MVA\DataFilter\SelectionCriteriaFormatter {
 			if (array_key_exists($as_parts[0], $this->am_mapping)) {
 				$s_outString = $this->am_mapping[$as_parts[0]]['alias'] . '.' . $as_parts[1];
 			} else {
-				throw new \MVA\DataFilter\Exception('Invalid field: ' . \MVA\Core\Debug::dumpToString($s_field) .
+				throw new \MVA\DataFilter\Exception('Invalid field: ' . $s_field .
 				                    ' passed to ' . __CLASS__ . ' - No Item named ' . $as_parts[0] . ' within the Model');
 			}
 		} else {
-			throw new \MVA\DataFilter\Exception('Invalid field: ' . \MVA\Core\Debug::dumpToString($s_field) .
+			throw new \MVA\DataFilter\Exception('Invalid field: ' . $s_field .
 			                    ' passed to ' . __CLASS__ . ' - Wrong Syntax');
 		}
 		return $s_outString;
