@@ -45,18 +45,25 @@ class Doctrine2Dql extends \MVA\DataFilter\SelectionCriteriaFormatter {
 
 	protected $i_paramCount = 0;
 
+	private $s_placeholderPrefix;
+
 
 	/**
 	 * Item Constructor
-	 * @param \MVA\DataFilter\SelectionCriteria Selection Criteria Item
-	 * @param array Mapping from Model entities to Doctrine DQL Entities / Aliases
+	 * @param \MVA\DataFilter\SelectionCriteria $I_SelectionCriteria Selection Criteria Item
+	 * @param array $am_mapping Mapping $array from Model entities to Doctrine DQL Entities / Aliases
+	 * @param string|null $s_placeholderPrefix allow customization of placeholder for parameters, in order to avoid conflict
+	 * when using different formatters for subqueries
+	 * @throws \Exception
+	 * @throws \MVA\DataFilter\Exception\OperatorException
+
 	 */
-	public function __construct( \MVA\DataFilter\SelectionCriteria $I_SelectionCriteria, array $am_mapping) {
+	public function __construct( \MVA\DataFilter\SelectionCriteria $I_SelectionCriteria, array $am_mapping, $s_placeholderPrefix = null) {
 		$this->I_selectionCriteria = $I_SelectionCriteria;
 		$this->am_mapping = $am_mapping;
 		$this->am_params = array();
+		$this->s_placeholderPrefix = $s_placeholderPrefix;
 		$this->s_dqlWhere = $this->extractWhereCriteria($this->I_selectionCriteria->getCondition());
-
 	}
 
 
@@ -174,11 +181,16 @@ class Doctrine2Dql extends \MVA\DataFilter\SelectionCriteriaFormatter {
 			// @FIXME: Take advantage of polimorphism here. Temp code, until decided how to refactor
 			$as_param = array();
 			$s_name = $I_condition->getSourceField();
-			$s_placeholder = str_replace(".","_",$s_name).'_'.$this->i_paramCount++;
 			$s_composedQuery = '';
 			$I_operator = $I_condition->getOperator();
 			$i_operator = $I_operator->getType();
 			$s_term = $I_condition->getComparisonValue();
+
+			if (!empty($this->s_placeholderPrefix)) {
+				$s_placeholder = $this->s_placeholderPrefix.'_'.str_replace(".","_",$s_name).'_'.$this->i_paramCount++;
+			} else {
+				$s_placeholder = str_replace(".","_",$s_name).'_'.$this->i_paramCount++;
+			}
 
 			$b_areParamsAssigned = false;
 
