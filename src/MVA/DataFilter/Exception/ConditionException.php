@@ -11,6 +11,6 @@ namespace MVA\DataFilter\Exception;
  * @package mva-libs
  *
  */
-class ConditionException extends MVA\DataFilter\Exception {
+class ConditionException extends \MVA\DataFilter\Exception {
 
 }

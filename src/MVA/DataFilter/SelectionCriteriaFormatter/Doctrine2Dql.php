@@ -45,18 +45,25 @@ class Doctrine2Dql extends \MVA\DataFilter\SelectionCriteriaFormatter {
 
 	protected $i_paramCount = 0;
 
+	private $s_placeholderPrefix;
+
 
 	/**
 	 * Item Constructor
-	 * @param \MVA\DataFilter\SelectionCriteria Selection Criteria Item
-	 * @param array Mapping from Model entities to Doctrine DQL Entities / Aliases
+	 * @param \MVA\DataFilter\SelectionCriteria $I_SelectionCriteria Selection Criteria Item
+	 * @param array $am_mapping Mapping $array from Model entities to Doctrine DQL Entities / Aliases
+	 * @param string|null $s_placeholderPrefix allow customization of placeholder for parameters, in order to avoid conflict
+	 * when using different formatters for subqueries
+	 * @throws \Exception
+	 * @throws \MVA\DataFilter\Exception\OperatorException
+
 	 */
-	public function __construct( \MVA\DataFilter\SelectionCriteria $I_SelectionCriteria, array $am_mapping) {
+	public function __construct( \MVA\DataFilter\SelectionCriteria $I_SelectionCriteria, array $am_mapping, $s_placeholderPrefix = null) {
 		$this->I_selectionCriteria = $I_SelectionCriteria;
 		$this->am_mapping = $am_mapping;
 		$this->am_params = array();
+		$this->s_placeholderPrefix = $s_placeholderPrefix;
 		$this->s_dqlWhere = $this->extractWhereCriteria($this->I_selectionCriteria->getCondition());
-
 	}
 
 
@@ -145,11 +152,11 @@ class Doctrine2Dql extends \MVA\DataFilter\SelectionCriteriaFormatter {
 						$as_outString[] = $this->am_mapping[$as_parts[0]]['alias'].'.'.$as_parts[1].' '.$as_orderByConstructs[$m_ordering];
 					$i_validClauses++;
 				} else {
-					throw new \MVA\DataFilter\Exception('Invalid order by field: '.\MVA\Core\Debug::dumpToString($s_field).
+					throw new \MVA\DataFilter\Exception('Invalid order by field: '.$s_field.
 					                    ' passed to '.__CLASS__.' - No Item named '.$as_parts[0].' within the Model');
 				}
 			} else {
-				throw new \MVA\DataFilter\Exception('Invalid order by field: '.\MVA\Core\Debug::dumpToString($s_field).
+				throw new \MVA\DataFilter\Exception('Invalid order by field: '.$s_field.
 				                    ' passed to '.__CLASS__.' - Wrong Syntax');
 			}
 		}
@@ -174,12 +181,14 @@ class Doctrine2Dql extends \MVA\DataFilter\SelectionCriteriaFormatter {
 			// @FIXME: Take advantage of polimorphism here. Temp code, until decided how to refactor
 			$as_param = array();
 			$s_name = $I_condition->getSourceField();
-			$s_placeholder = str_replace(".","_",$s_name).'_'.$this->i_paramCount++;
 			$s_composedQuery = '';
 			$I_operator = $I_condition->getOperator();
 			$i_operator = $I_operator->getType();
 			$s_term = $I_condition->getComparisonValue();
-
+			$s_placeholder = str_replace(".","_",$s_name).'_'.$this->i_paramCount++;
+			if (!empty($this->s_placeholderPrefix)) {
+				$s_placeholder = $this->s_placeholderPrefix.'_'.$s_placeholder;
+			}
 			$b_areParamsAssigned = false;
 
 			if ($I_operator instanceof \MVA\DataFilter\Operator\NullComparison) {
@@ -419,11 +428,11 @@ class Doctrine2Dql extends \MVA\DataFilter\SelectionCriteriaFormatter {
 			if (array_key_exists($as_parts[0], $this->am_mapping)) {
 				$s_outString = $this->am_mapping[$as_parts[0]]['alias'] . '.' . $as_parts[1];
 			} else {
-				throw new \MVA\DataFilter\Exception('Invalid field: ' . \MVA\Core\Debug::dumpToString($s_field) .
+				throw new \MVA\DataFilter\Exception('Invalid field: ' . $s_field .
 				                    ' passed to ' . __CLASS__ . ' - No Item named ' . $as_parts[0] . ' within the Model');
 			}
 		} else {
-			throw new \MVA\DataFilter\Exception('Invalid field: ' . \MVA\Core\Debug::dumpToString($s_field) .
+			throw new \MVA\DataFilter\Exception('Invalid field: ' . $s_field .
 			                    ' passed to ' . __CLASS__ . ' - Wrong Syntax');
 		}
 		return $s_outString;
