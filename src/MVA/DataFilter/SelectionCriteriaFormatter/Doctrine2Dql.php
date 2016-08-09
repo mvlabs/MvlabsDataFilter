@@ -185,13 +185,10 @@ class Doctrine2Dql extends \MVA\DataFilter\SelectionCriteriaFormatter {
 			$I_operator = $I_condition->getOperator();
 			$i_operator = $I_operator->getType();
 			$s_term = $I_condition->getComparisonValue();
-
+			$s_placeholder = str_replace(".","_",$s_name).'_'.$this->i_paramCount++;
 			if (!empty($this->s_placeholderPrefix)) {
-				$s_placeholder = $this->s_placeholderPrefix.'_'.str_replace(".","_",$s_name).'_'.$this->i_paramCount++;
-			} else {
-				$s_placeholder = str_replace(".","_",$s_name).'_'.$this->i_paramCount++;
+				$s_placeholder = $this->s_placeholderPrefix.'_'.$s_placeholder;
 			}
-
 			$b_areParamsAssigned = false;
 
 			if ($I_operator instanceof \MVA\DataFilter\Operator\NullComparison) {
